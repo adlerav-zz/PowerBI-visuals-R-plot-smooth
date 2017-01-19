@@ -1,0 +1,25 @@
+{
+  "visual": {
+    "name": "rPlotSmooth",
+    "displayName": "RPlotSmooth",
+    "guid": "PBI_CV_E67F6187_8266_4C40_822B_369EDD127725",
+    "visualClassName": "Visual",
+    "version": "1.0.0",
+    "description": "",
+    "supportUrl": "",
+    "gitHubUrl": ""
+  },
+  "apiVersion": "1.4.0",
+  "author": {
+    "name": "",
+    "email": ""
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": [],
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": "dependencies.json",
+  "stringResources": "stringResources.json"
+}
