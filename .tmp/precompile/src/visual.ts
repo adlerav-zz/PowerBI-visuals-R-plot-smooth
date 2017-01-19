@@ -23,7 +23,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-module powerbi.extensibility.visual {
+module powerbi.extensibility.visual.PBI_CV_E67F6187_8266_4C40_822B_369EDD127725  {
     
     // Below is a snippet of a definition for an object which will contain the property values
     // selected by the users

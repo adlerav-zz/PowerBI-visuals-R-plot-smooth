@@ -15,11 +15,10 @@
     "email": ""
   },
   "assets": {
-    "icon": "assets/icon.png"
+    "icon": "assets/R.png"
   },
   "externalJS": [],
   "style": "style/visual.less",
   "capabilities": "capabilities.json",
-  "dependencies": "dependencies.json",
-  "stringResources": "stringResources.json"
+  "dependencies": "dependencies.json"
 }
