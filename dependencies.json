@@ -4,6 +4,16 @@
       "name": "ggplot2",
       "displayName": "GG Plot 2",
       "url": "https://cran.r-project.org/web/packages/ggplot2/index.html"
+    },
+        {
+      "name": "plotly",
+      "displayName": "Plotly",
+      "url": "https://cran.r-project.org/web/packages/plotly/index.html"
+    },
+    {
+      "name": "htmlwidgets",
+      "displayName": "htmlwidgets",
+      "url": "https://cran.r-project.org/web/packages/htmlwidgets/index.html"
     }
   ]
 }

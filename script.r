@@ -99,11 +99,20 @@ internalSaveWidget <- function(w, fname)
 ####################################################################
 fname <- 'out.html'
 
-library(htmlwidgets)
-library(ggplot2)
-library(plotly)
-library(dplyr)
-library(zoo)
+###############Library Declarations###############
+
+libraryRequireInstall = function(packageName, ...)
+{
+  if(!require(packageName, character.only = TRUE)) 
+    warning(paste("*** The package: '", packageName, "' was not installed ***",sep=""))
+}
+
+#ets
+libraryRequireInstall("htmlwidgets")
+libraryRequireInstall("ggplot2")
+libraryRequireInstall("plotly")
+
+###############Internal parameters definitions#################
 
 # actual code here
 dataset2 <- Values
