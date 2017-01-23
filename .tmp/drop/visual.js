@@ -6,6 +6,51 @@ var powerbi;
         (function (visual) {
             var PBI_CV_E67F6187_8266_4C40_822B_369EDD127725;
             (function (PBI_CV_E67F6187_8266_4C40_822B_369EDD127725) {
+                var nonAcceptedNodes = [
+                    'META',
+                ];
+                function ParseElement(el, target) {
+                    var arr;
+                    var nodes = el.children;
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (nonAcceptedNodes.indexOf(nodes.item(i).nodeName) != -1) {
+                            continue;
+                        }
+                        console.log(nodes[i].nodeName);
+                        nodes.item(i).cloneNode(true);
+                        var tempNode = void 0;
+                        if (nodes.item(i).nodeName == 'SCRIPT') {
+                            tempNode = createScriptNode(nodes.item(i));
+                        }
+                        else {
+                            tempNode = nodes.item(i).cloneNode(true);
+                        }
+                        target.appendChild(tempNode);
+                        arr.push(tempNode);
+                    }
+                    return arr;
+                }
+                function createScriptNode(refNode) {
+                    var script = document.createElement('script');
+                    var attr = refNode.attributes;
+                    for (var i = 0; i < attr.length; i++) {
+                        script.setAttribute(attr[i].name, attr[i].textContent);
+                    }
+                    script.innerHTML = refNode.innerHTML;
+                    return script;
+                }
+            })(PBI_CV_E67F6187_8266_4C40_822B_369EDD127725 = visual.PBI_CV_E67F6187_8266_4C40_822B_369EDD127725 || (visual.PBI_CV_E67F6187_8266_4C40_822B_369EDD127725 = {}));
+        })(visual = extensibility.visual || (extensibility.visual = {}));
+    })(extensibility = powerbi.extensibility || (powerbi.extensibility = {}));
+})(powerbi || (powerbi = {}));
+var powerbi;
+(function (powerbi) {
+    var extensibility;
+    (function (extensibility) {
+        var visual;
+        (function (visual) {
+            var PBI_CV_E67F6187_8266_4C40_822B_369EDD127725;
+            (function (PBI_CV_E67F6187_8266_4C40_822B_369EDD127725) {
                 function getValue(objects, objectName, propertyName, defaultValue) {
                     if (objects) {
                         var object = objects[objectName];

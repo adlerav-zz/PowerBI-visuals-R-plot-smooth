@@ -97,7 +97,6 @@ internalSaveWidget <- function(w, fname)
   FlattenHTML(fname, fname)
 }
 ####################################################################
-fname <- 'out.html'
 
 ###############Library Declarations###############
 
@@ -126,7 +125,7 @@ detach(dataset2)
 # code end
 
 w = as.widget(p)
-internalSaveWidget(w, fname)
+internalSaveWidget(w, out.html)
 
 #Sys.sleep(20)
 ####################################################################
