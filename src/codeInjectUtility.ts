@@ -5,7 +5,8 @@ module powerbi.extensibility.visual {
 
   export function ParseElement(el: HTMLElement , target: HTMLElement) : Node[]
   {
-    let arr: Node[];
+    //  debugger;
+    let arr: Node[] = [];
     let nodes = el.children;
     for (var i=0; i<nodes.length; i++)
     {
@@ -13,7 +14,6 @@ module powerbi.extensibility.visual {
       if (nonAcceptedNodes.indexOf(nodes.item(i).nodeName)!=-1){
         continue;
       }
-      console.log(nodes[i].nodeName);
 
       let tempNode: HTMLElement; 
       if (nodes.item(i).nodeName == 'SCRIPT'){
@@ -28,13 +28,13 @@ module powerbi.extensibility.visual {
   }
   
   function createScriptNode(refNode: Element): HTMLElement{
-    let script: HTMLScriptElement = document.createElement('script');
-    let attr: NamedNodeMap = refNode.attributes;
+    let script = document.createElement('script');
+    let attr = refNode.attributes;
     for (var i=0; i<attr.length; i++)
     {
       script.setAttribute(attr[i].name, attr[i].textContent);
     }
-      
+
     script.innerHTML = refNode.innerHTML;  
     return script;
   }
