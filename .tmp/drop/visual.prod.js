@@ -9,6 +9,15 @@ var powerbi;
                 var nonAcceptedNodes = [
                     'META',
                 ];
+                var injectorCounter = 0;
+                function ResetInjector() {
+                    injectorCounter = 0;
+                }
+                PBI_CV_E67F6187_8266_4C40_822B_369EDD127725.ResetInjector = ResetInjector;
+                function injectorReady() {
+                    return injectorCounter == 0;
+                }
+                PBI_CV_E67F6187_8266_4C40_822B_369EDD127725.injectorReady = injectorReady;
                 function ParseElement(el, target) {
                     //  debugger;
                     var arr = [];
@@ -18,7 +27,7 @@ var powerbi;
                             continue;
                         }
                         var tempNode = void 0;
-                        if (nodes.item(i).nodeName == 'SCRIPT') {
+                        if (nodes.item(i).nodeName.toLowerCase() == 'script') {
                             tempNode = createScriptNode(nodes.item(i));
                         }
                         else {
@@ -35,6 +44,13 @@ var powerbi;
                     var attr = refNode.attributes;
                     for (var i = 0; i < attr.length; i++) {
                         script.setAttribute(attr[i].name, attr[i].textContent);
+                        if (attr[i].name.toLowerCase() === 'src') {
+                            // waiting only for src to finish loading
+                            injectorCounter++;
+                            script.onload = function () {
+                                injectorCounter--;
+                            };
+                        }
                     }
                     script.innerHTML = refNode.innerHTML;
                     return script;
@@ -161,15 +177,13 @@ var powerbi;
                         this.onResizing(options.viewport);
                     };
                     Visual.prototype.onResizing = function (finalViewport) {
-                        //this.iframeElement.style.height = finalViewport.height + 'px';
-                        //this.iframeElement.style.width = finalViewport.width + 'px';
                     };
                     Visual.prototype.injectCodeFromPayload = function (payloadBase64) {
+                        PBI_CV_E67F6187_8266_4C40_822B_369EDD127725.ResetInjector();
                         var el = document.createElement('html');
                         el.innerHTML = window.atob(payloadBase64);
                         var head = el.getElementsByTagName('head')[0];
                         var body = el.getElementsByTagName('body')[0];
-                        debugger;
                         // update the header data only on the 1st update
                         if (this.headNodes.length == 0) {
                             this.headNodes = PBI_CV_E67F6187_8266_4C40_822B_369EDD127725.ParseElement(head, document.head);
@@ -179,13 +193,15 @@ var powerbi;
                             document.body.removeChild(tempNode);
                         }
                         this.bodyNodes = PBI_CV_E67F6187_8266_4C40_822B_369EDD127725.ParseElement(body, document.body);
-                        var delay = 1; //1 seconds
-                        setTimeout(function () {
-                            console.log(window);
-                            if (window.hasOwnProperty('HTMLWidgets')) {
-                                window['HTMLWidgets'].staticRender();
+                        var intervalVar = window.setInterval(function () {
+                            if (PBI_CV_E67F6187_8266_4C40_822B_369EDD127725.injectorReady()) {
+                                window.clearInterval(intervalVar);
+                                console.log('Render');
+                                if (window.hasOwnProperty('HTMLWidgets')) {
+                                    window['HTMLWidgets'].staticRender();
+                                }
                             }
-                        }, delay);
+                        }, 100);
                     };
                     /**
                      * This function gets called by the update function above. You should read the new values of the properties into

@@ -86,17 +86,17 @@ module powerbi.extensibility.visual {
         }
 
         public onResizing(finalViewport: IViewport): void {
-            //this.iframeElement.style.height = finalViewport.height + 'px';
-            //this.iframeElement.style.width = finalViewport.width + 'px';
+
         }
 
         private injectCodeFromPayload(payloadBase64: string): void{
+            ResetInjector();
+
             var el = document.createElement('html');
             el.innerHTML = window.atob(payloadBase64);
             let head = el.getElementsByTagName('head')[0];
             let body = el.getElementsByTagName('body')[0];
 
-//debugger;
             // update the header data only on the 1st update
             if (this.headNodes.length==0){
                 this.headNodes = ParseElement(head, document.head);
@@ -107,15 +107,18 @@ module powerbi.extensibility.visual {
                 document.body.removeChild(tempNode);
             }
             this.bodyNodes = ParseElement(body, document.body);
-    
-            var delay=1; //1 seconds
-            setTimeout(function() {
-                console.log(window); 
-                if(window.hasOwnProperty('HTMLWidgets')){
-                    window['HTMLWidgets'].staticRender();
+
+            let intervalVar = window.setInterval(() => {
+                if (injectorReady()) {
+                    window.clearInterval(intervalVar);
+                    console.log('Render');
+                    if (window.hasOwnProperty('HTMLWidgets')) {
+                        window['HTMLWidgets'].staticRender();
+                    }
                 }
-                }, delay);
+            }, 100);
         }
+
         /**
          * This function gets called by the update function above. You should read the new values of the properties into 
          * your settings object so you can use the new value in the enumerateObjectInstances function below.

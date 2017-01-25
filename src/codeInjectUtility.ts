@@ -1,8 +1,19 @@
 module powerbi.extensibility.visual {
-    const nonAcceptedNodes = [
-        'META',
-    ];
+  
+  const nonAcceptedNodes = [
+    'META',
+  ];
 
+  let injectorCounter: number = 0;
+
+  export function ResetInjector() : void {
+    injectorCounter = 0;
+  }
+
+  export function injectorReady() : boolean {
+    return injectorCounter == 0;
+  }
+  
   export function ParseElement(el: HTMLElement , target: HTMLElement) : Node[]
   {
     //  debugger;
@@ -16,7 +27,7 @@ module powerbi.extensibility.visual {
       }
 
       let tempNode: HTMLElement; 
-      if (nodes.item(i).nodeName == 'SCRIPT'){
+      if (nodes.item(i).nodeName.toLowerCase() == 'script'){
         tempNode = createScriptNode(nodes.item(i));
       }else{
         tempNode = <HTMLElement>nodes.item(i).cloneNode(true);  
@@ -33,6 +44,14 @@ module powerbi.extensibility.visual {
     for (var i=0; i<attr.length; i++)
     {
       script.setAttribute(attr[i].name, attr[i].textContent);
+
+      if (attr[i].name.toLowerCase() === 'src') {
+        // waiting only for src to finish loading
+        injectorCounter++;
+        script.onload = function() {
+            injectorCounter--;
+        };
+      }
     }
 
     script.innerHTML = refNode.innerHTML;  
