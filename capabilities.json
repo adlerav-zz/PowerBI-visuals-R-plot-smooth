@@ -48,7 +48,17 @@
           }
         }
       }
-    }
+    },
+    "OptimizeROutput": {
+            "displayName": "Optimize R Output",
+            "description": "temp",
+            "properties": {
+                "Enable": {
+                    "displayName": "Enable",
+                    "type": { "bool": true }
+                }
+            }
+        }
   },
   "suppressDefaultTitle": true
 }

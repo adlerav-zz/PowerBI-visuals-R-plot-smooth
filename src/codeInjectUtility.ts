@@ -16,7 +16,6 @@ module powerbi.extensibility.visual {
   
   export function ParseElement(el: HTMLElement , target: HTMLElement) : Node[]
   {
-    //  debugger;
     let arr: Node[] = [];
     let nodes = el.children;
     for (var i=0; i<nodes.length; i++)
@@ -56,5 +55,16 @@ module powerbi.extensibility.visual {
 
     script.innerHTML = refNode.innerHTML;  
     return script;
+  }
+
+  export function RunHTMLWidgetRenderer(): void {
+    let intervalVar = window.setInterval(() => {
+      if (injectorReady()) {
+        window.clearInterval(intervalVar);
+        if (window.hasOwnProperty('HTMLWidgets')) {
+          window['HTMLWidgets'].staticRender();
+        }
+      }
+    }, 100);
   }
 }

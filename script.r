@@ -73,6 +73,8 @@ ReadFileForEmbedding <- function(fname)
 
 FindSrcReplacement <- function(str)
 {
+  return(NULL)
+  
   str <- iconv(str, to="UTF-8")
   pattern = "plotlyjs-(\\w.+)/plotly-latest.min.js"
   match1=regexpr(pattern, str)
@@ -91,10 +93,13 @@ FindSrcReplacement <- function(str)
   return(str)
 }
 
-internalSaveWidget <- function(w, fname)
+internalSaveWidget <- function(w, fname, bFlatten)
 {
   saveWidget(w, file=fname, selfcontained = FALSE)
-  FlattenHTML(fname, fname)
+  if (bFlatten)
+  {
+    FlattenHTML(fname, fname)
+  }
 }
 ####################################################################
 
@@ -105,6 +110,12 @@ libraryRequireInstall = function(packageName, ...)
   if(!require(packageName, character.only = TRUE)) 
     warning(paste("*** The package: '", packageName, "' was not installed ***",sep=""))
 }
+
+save(list = ls(all.names = TRUE), file='c:/temp/test.rda')
+
+OptimizeHTML = FALSE;
+if(exists("OptimizeROutput_Enable"))
+  OptimizeHTML = OptimizeROutput_Enable;
 
 #ets
 libraryRequireInstall("htmlwidgets")
@@ -125,7 +136,7 @@ detach(dataset2)
 # code end
 
 w = as.widget(p)
-internalSaveWidget(w, 'out.html')
+internalSaveWidget(w, 'out.html', OptimizeHTML)
 
 #Sys.sleep(20)
 ####################################################################
