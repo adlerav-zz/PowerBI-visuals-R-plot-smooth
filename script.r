@@ -25,10 +25,10 @@ FlattenHTML <- function(fnameIn, fnameOut)
       replaceNodes(node, newNode)
     }else{
       str=ReadFileForEmbedding(b['src']);
-      if (is.null(str)) continue
-      
-      newNode=xmlNode("script", str, attrs=c(type="text/javascript"))
-      replaceNodes(node, newNode)
+      if (!is.null(str)){     
+        newNode=xmlNode("script", str, attrs=c(type="text/javascript"))
+        replaceNodes(node, newNode)
+      }
     }
   }
   
@@ -39,10 +39,11 @@ FlattenHTML <- function(fnameIn, fnameOut)
     b=xmlAttrs(node)
     f = file.path(dir, b['href'])
     str=ReadFileForEmbedding(f);
-    if (is.null(str)) continue
-    
-    newNode=xmlNode("style", str)
-    replaceNodes(node, newNode)
+    if (!is.null(str))
+    {
+      newNode=xmlNode("style", str)
+      replaceNodes(node, newNode)
+    }
   }
   
   saveXML(html, file=fnameOut)
@@ -73,7 +74,7 @@ ReadFileForEmbedding <- function(fname)
 
 FindSrcReplacement <- function(str)
 {
-  return(NULL)
+  #return(NULL)
   
   str <- iconv(str, to="UTF-8")
   pattern = "plotlyjs-(\\w.+)/plotly-latest.min.js"
@@ -93,13 +94,10 @@ FindSrcReplacement <- function(str)
   return(str)
 }
 
-internalSaveWidget <- function(w, fname, bFlatten)
+internalSaveWidget <- function(w, fname, OptimizeHTML)
 {
   saveWidget(w, file=fname, selfcontained = FALSE)
-  if (bFlatten)
-  {
-    FlattenHTML(fname, fname)
-  }
+  FlattenHTML(fname, fname)
 }
 ####################################################################
 
@@ -111,7 +109,7 @@ libraryRequireInstall = function(packageName, ...)
     warning(paste("*** The package: '", packageName, "' was not installed ***",sep=""))
 }
 
-save(list = ls(all.names = TRUE), file='c:/temp/test.rda')
+#save(list = ls(all.names = TRUE), file='c:/temp/test.rda')
 
 OptimizeHTML = FALSE;
 if(exists("OptimizeROutput_Enable"))
@@ -134,6 +132,11 @@ p <- add_trace(p, y = fitted(loess(Value ~ as.numeric(Year))), x = Year)
 p <- layout(p, title = "# Road Accidents (per year)", showlegend = FALSE)
 detach(dataset2)
 # code end
+
+# disable buttons in hover menue
+p <- config(p, staticPlot = FALSE, workspace = TRUE, editable = FALSE, 
+            sendData = FALSE, displaylogo = FALSE,
+            modeBarButtonsToRemove = list("sendDataToCloud", "toImage"))
 
 w = as.widget(p)
 internalSaveWidget(w, 'out.html', OptimizeHTML)
